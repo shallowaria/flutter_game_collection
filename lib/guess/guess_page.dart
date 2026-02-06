@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:game/guess/guess_app_bar.dart';
 import 'package:game/guess/result_notice.dart';
-import 'package:flutter/services.dart';
 
 class GuessPage extends StatefulWidget {
   const GuessPage({super.key, required this.title});
@@ -15,7 +14,7 @@ class GuessPage extends StatefulWidget {
 class _GuessPageState extends State<GuessPage> {
   int _value = 0;
 
-  Random _random = Random();
+  final Random _random = Random();
   bool _guessing = false;
   bool? _isBig;
 
@@ -27,7 +26,7 @@ class _GuessPageState extends State<GuessPage> {
     });
   }
 
-  TextEditingController _guessCtrl = TextEditingController();
+  final TextEditingController _guessCtrl = TextEditingController();
 
   void _onCheck() {
     print('=====Check:目标数值:$_value=====${_guessCtrl.text}============');
