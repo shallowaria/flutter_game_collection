@@ -1,48 +1,18 @@
 import 'package:flutter/material.dart';
 
-class AnimateText extends StatefulWidget {
+class AnimateText extends StatelessWidget {
   final String text;
+  final Animation<double> opacity;
+  final Animation<Offset> position;
+  final Animation<double> scale;
 
-  const AnimateText({super.key, required this.text});
-
-  @override
-  State<AnimateText> createState() => _FadTextState();
-}
-
-class _FadTextState extends State<AnimateText>
-    with SingleTickerProviderStateMixin {
-  late AnimationController controller;
-  late Animation<double> opacity;
-  late Animation<Offset> position;
-  late Animation<double> scale;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 500),
-    );
-    opacity = Tween(begin: 1.0, end: 0.0).animate(controller);
-    scale = Tween(begin: 1.0, end: 0.9).animate(controller);
-    position = Tween<Offset>(
-      begin: const Offset(0, 2),
-      end: Offset.zero,
-    ).animate(controller);
-    controller.forward();
-  }
-
-  @override
-  void didUpdateWidget(covariant AnimateText oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    controller.forward(from: 0);
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
+  const AnimateText({
+    super.key,
+    required this.text,
+    required this.opacity,
+    required this.position,
+    required this.scale,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +20,7 @@ class _FadTextState extends State<AnimateText>
       scale: scale,
       child: SlideTransition(
         position: position,
-        child: FadeTransition(opacity: opacity, child: Text(widget.text)),
+        child: FadeTransition(opacity: opacity, child: Text(text)),
       ),
     );
   }

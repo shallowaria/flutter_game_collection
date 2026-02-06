@@ -5,7 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:game/muyu/animate_text.dart';
 import 'package:game/muyu/models/audio_option.dart';
+import 'package:game/muyu/models/merit_record.dart';
 import 'package:game/muyu/options/select_audio.dart';
+import 'package:uuid/uuid.dart';
 import 'models/image_option.dart';
 import 'muyu_image.dart';
 
@@ -20,11 +22,17 @@ class MuyuPage extends StatefulWidget {
   State<MuyuPage> createState() => _MuyuPageState();
 }
 
-class _MuyuPageState extends State<MuyuPage> {
+class _MuyuPageState extends State<MuyuPage> with TickerProviderStateMixin {
   int _counter = 0;
   int _cruValue = 0;
+  bool _showFloatingText = false;
   int _activeImageIndex = 0;
   int _activeAudioIndex = 0;
+
+  late AnimationController _animationController;
+  late Animation<double> _opacity;
+  late Animation<Offset> _position;
+  late Animation<double> _scale;
 
   final Random _random = Random();
 
@@ -39,16 +47,50 @@ class _MuyuPageState extends State<MuyuPage> {
     AudioOption(name: '音效3', src: 'muyu_3.mp3'),
   ];
 
+  final Uuid uuid = Uuid();
+
+  final List<MeritRecord> _records = [];
+
   AudioPool? pool;
 
   @override
   void initState() {
     super.initState();
+    _initAnimationController();
     _initAudioPool();
+  }
+
+  void _initAnimationController() {
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _opacity = Tween<double>(
+      begin: 1.0,
+      end: 0.0,
+    ).animate(_animationController);
+    _scale = Tween<double>(begin: 1.0, end: 0.9).animate(_animationController);
+    _position = Tween<Offset>(
+      begin: const Offset(0, 2),
+      end: Offset.zero,
+    ).animate(_animationController);
+    _animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        setState(() {
+          _showFloatingText = false;
+        });
+      }
+    });
   }
 
   void _initAudioPool() async {
     pool = await FlameAudio.createPool('muyu_1.mp3', maxPlayers: 1);
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -69,7 +111,13 @@ class _MuyuPageState extends State<MuyuPage> {
               alignment: Alignment.topCenter,
               children: [
                 MuyuAssetsImage(image: activeImage, onTap: _onKnock),
-                if (_cruValue != 0) AnimateText(text: '功德+$_cruValue'),
+                if (_showFloatingText)
+                  AnimateText(
+                    text: '功德+$_cruValue',
+                    opacity: _opacity,
+                    position: _position,
+                    scale: _scale,
+                  ),
               ],
             ),
           ),
@@ -111,7 +159,20 @@ class _MuyuPageState extends State<MuyuPage> {
     setState(() {
       _cruValue = knockValue;
       _counter += _cruValue;
+      _showFloatingText = true;
+      // 添加功德记录
+      String id = uuid.v4();
+      _records.add(
+        MeritRecord(
+          id,
+          DateTime.now().millisecondsSinceEpoch,
+          _cruValue,
+          activeImage,
+          audioOptions[_activeAudioIndex].name,
+        ),
+      );
     });
+    _animationController.forward(from: 0.0);
   }
 
   String get activeImage => imageOptions[_activeImageIndex].src;
