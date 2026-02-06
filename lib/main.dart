@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:game/muyu/muyu_page.dart';
+
+import 'counter/counter_page.dart';
+import 'guess/guess_page.dart';
+import 'muyu/muyu_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,11 +10,12 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'Flutter Game',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
       home: MuyuPage(),
     );

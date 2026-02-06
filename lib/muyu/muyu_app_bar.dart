@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class MuyuAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback onTapHistory;
@@ -9,15 +10,21 @@ class MuyuAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 0,
+      systemOverlayStyle: const SystemUiOverlayStyle(
+        statusBarIconBrightness: Brightness.dark,
+        statusBarColor: Colors.transparent,
+      ),
       backgroundColor: Colors.white,
       titleTextStyle: const TextStyle(
         color: Colors.black,
         fontSize: 16,
         fontWeight: FontWeight.bold,
       ),
-      iconTheme: IconThemeData(color: Colors.black),
-      title: Text('电子木鱼'),
-      actions: [IconButton(onPressed: onTapHistory, icon: Icon(Icons.history))],
+      iconTheme: const IconThemeData(color: Colors.black),
+      title: const Text("电子木鱼"),
+      actions: [
+        IconButton(onPressed: onTapHistory, icon: const Icon(Icons.history)),
+      ],
     );
   }
 

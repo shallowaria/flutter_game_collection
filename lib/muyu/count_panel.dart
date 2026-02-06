@@ -15,14 +15,11 @@ class CountPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ButtonStyle style = ElevatedButton.styleFrom(
-      minimumSize: Size(36, 36),
-      backgroundColor: Colors.green,
+      minimumSize: const Size(36, 36),
       padding: EdgeInsets.zero,
+      backgroundColor: Colors.green,
       elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      foregroundColor: Colors.white,
     );
-
     return Stack(
       children: [
         Center(
@@ -31,7 +28,6 @@ class CountPanel extends StatelessWidget {
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
         ),
-
         Positioned(
           right: 10,
           top: 10,
