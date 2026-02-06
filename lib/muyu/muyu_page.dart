@@ -7,6 +7,7 @@ import 'package:game/muyu/animate_text.dart';
 import 'package:game/muyu/models/audio_option.dart';
 import 'package:game/muyu/models/merit_record.dart';
 import 'package:game/muyu/options/select_audio.dart';
+import 'package:game/muyu/record_history.dart';
 import 'package:uuid/uuid.dart';
 import 'models/image_option.dart';
 import 'muyu_image.dart';
@@ -126,7 +127,13 @@ class _MuyuPageState extends State<MuyuPage> with TickerProviderStateMixin {
     );
   }
 
-  void _toHistory() {}
+  void _toHistory() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => RecordHistory(records: _records.reversed.toList()),
+      ),
+    );
+  }
 
   void _onTapSwitchAudio() {
     showCupertinoModalPopup(
