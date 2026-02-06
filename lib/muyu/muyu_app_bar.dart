@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class MuyuAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final VoidCallback onTabHistory;
+  final VoidCallback onTapHistory;
 
-  const MuyuAppBar({super.key, required this.onTabHistory});
+  const MuyuAppBar({super.key, required this.onTapHistory});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class MuyuAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       iconTheme: IconThemeData(color: Colors.black),
       title: Text('电子木鱼'),
-      actions: [IconButton(onPressed: onTabHistory, icon: Icon(Icons.history))],
+      actions: [IconButton(onPressed: onTapHistory, icon: Icon(Icons.history))],
     );
   }
 
